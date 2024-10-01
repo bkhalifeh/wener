@@ -1,0 +1,53 @@
+services:
+  backend-db:
+    image: postgres:16.2-alpine3.19
+    environment:
+      POSTGRES_DB: wener_rs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+
+  backend:
+    build:
+      target: development
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - ./static:/app/static
+      - ./upload:/app/upload
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - backend-db
+    command: ["cargo", "watch", "-x", "run"]
+
+  pgadmin:
+    image: dpage/pgadmin4:8.4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_LISTEN_PORT: 5050
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - backend-db
+
+  nginx:
+    image: nginx:stable-alpine3.17
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx/development:/etc/nginx/conf.d
+      - ./static:/www/static
+    depends_on:
+      - backend
+      - pgadmin
+      - frontend
+
+volumes:
+  postgres:
+  pgadmin:
