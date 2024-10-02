@@ -1,6 +1,5 @@
 use crate::util::TAppRouter;
 use axum::Router;
-use utoipa::OpenApi;
 
 pub mod auth;
 

@@ -7,6 +7,6 @@ use utoipa::OpenApi;
         (name = "user")
     ),
     paths(auth::sign_up_post,),
-    components(schemas(auth::UserSignUpDto)),
+    components(schemas(auth::UserSignUpDto, auth::User)),
 )]
 pub struct ApiDoc;
