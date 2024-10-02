@@ -6,6 +6,7 @@ RUN cargo binstall -y cargo-watch
 RUN apk add --no-cache musl-dev openssl-libs-static libpq-dev
 ENV RUSTFLAGS="-lpgcommon -lpgport -lssl -lcrypto"
 RUN cargo install diesel_cli --no-default-features --features postgres
+RUN apk add --no-cache protoc
 WORKDIR /app
 
 FROM base as development
