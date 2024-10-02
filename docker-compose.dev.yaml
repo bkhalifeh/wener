@@ -18,11 +18,20 @@ services:
       - ./backend:/app
       - ./static:/app/static
       - ./upload:/app/upload
-    env_file:
-      - ./backend/.env
     depends_on:
       - backend-db
     command: ["cargo", "watch", "-x", "run"]
+
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./frontend:/app
+    command: ["trunk", "serve"]
 
   pgadmin:
     image: dpage/pgadmin4:8.4
@@ -46,7 +55,6 @@ services:
     depends_on:
       - backend
       - pgadmin
-      - frontend
 
 volumes:
   postgres:
