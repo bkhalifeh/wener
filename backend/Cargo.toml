@@ -4,3 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+dotenvy = "0.15.7"
+tokio = { version = "1.40.0", features = ["full"] }
+axum = { version = "0.7.6", features = ["multipart"] }
+diesel = "2.2.4"
+diesel-async = { version = "0.5.0", features = ["postgres", "bb8"] }
+serde = { version = "1.0.210", features = ["derive"] }
+argon2 = "0.5.3"
+base64 = "0.22.1"
+bb8 = "0.8.5"
